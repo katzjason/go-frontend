@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import NavItem from './navitem';
+import Link from 'next/link';
+import styles from './navbar.module.css';
 
 type NavItemType = {
   name: string,
@@ -10,12 +11,16 @@ type NavBarProps = {
   items: NavItemType[];
 };
 
+
 export default function NavBar({ items }: NavBarProps) {
   return (
-    <div>
+    <ul className={styles.container}>
       {items.map(({ name, link }) => (
-        <NavItem name={name} link={link}></NavItem>
-      ))};
-    </div>
+        <li className={styles.navItem} key={name}>
+          <Link href={link}>{name}</Link>
+        </li>
+      ))
+      }
+    </ul >
   );
 }

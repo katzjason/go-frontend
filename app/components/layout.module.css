@@ -1,6 +1,8 @@
 .container {
-  max-width: 36rem;
+  max-width: 54rem;
+  max-height: 54rem;
+  min-width: 54rem;
+  min-height: 54rem;
   padding: 0 1rem;
   margin: 3rem auto 6rem;
-
 }

@@ -1,28 +1,31 @@
+
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import Layout from './components/layout';
-import NavBar from './components/navbar';
+import Board from './components/board';
 
-type NavItemType = {
-  name: string,
-  link: string
-};
 
-const navItems: NavItemType[] = [
-  { name: "Play", link: "/play-page" },
-  { name: "About", link: "/about-page" }
-];
-
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+
+  const [board, setBoard] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/board")
+      .then((response) => response.json())
+      .then((data) => setBoard(data))
+      .catch((error) => console.error("Error fetchiing board", error))
+  }, []);
+
+
+
   return (
     <Layout>
-      <NavBar items={navItems} />
+      <Board></Board>
       <h1>Site under construction.</h1>
-      <h2> Navigate to old-page
-        <Link href='/posts'> here</Link>
-      </h2>
+      <h2>{board}</h2>
     </Layout>
-
   );
 }

@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  background: #00573F;
+  width: 100%;
+}
+
+.navItem {
+  /* font-family: sans-serif; */
+  font: Helvetica;
+  font-size: large;
+  font-style: bold;
+}
