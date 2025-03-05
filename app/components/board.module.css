@@ -1,7 +1,26 @@
+.boardBackground {
+  background-color: #947A54;
+}
+
 .board {
-  fill: #D8B589
+  fill: #D8B589;
+  x: 5%;
+  y: 5%;
 }
 
 .boardLine {
-  stroke: red;
+  stroke: black;
+  stroke-width: 3px;
+}
+
+.whiteStone {
+  fill: white;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.blackStone {
+  fill: black;
+  stroke: white;
+  stroke-width: 1px;
 }

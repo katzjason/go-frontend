@@ -19,11 +19,9 @@ export default function Home() {
       .catch((error) => console.error("Error fetchiing board", error))
   }, []);
 
-
-
   return (
     <Layout>
-      <Board></Board>
+      <Board>{board}</Board>
       <h1>Site under construction.</h1>
       <h2>{board}</h2>
     </Layout>
