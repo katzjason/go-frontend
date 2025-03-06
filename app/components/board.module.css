@@ -1,5 +1,44 @@
+@media (min-width: 2001px) {
+  .boardBackground {
+    width: 900px;
+    height: 900px;
+  }
+}
+
+@media (max-width: 2000px) {
+  .boardBackground {
+    width: 700px;
+    height: 700px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .boardBackground {
+    width: 600px;
+    height: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .boardBackground {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .boardBackground {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+
 .boardBackground {
   background-color: #947A54;
+  margin-left: 20%;
 }
 
 .board {

@@ -3,7 +3,7 @@ import styles from './board.module.css';
 export default function Board({ children }: { children: number[][] }) {
   return (
     <div>
-      <svg className={styles.boardBackground} width="54rem" height="40rem">
+      <svg className={styles.boardBackground}>
         <g>
           <rect className={styles.board} width="90%" height="90%"></rect>
           {/* Vertical lines */}

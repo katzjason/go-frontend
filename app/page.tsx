@@ -22,8 +22,6 @@ export default function Home() {
   return (
     <Layout>
       <Board>{board}</Board>
-      <h1>Site under construction.</h1>
-      <h2>{board}</h2>
     </Layout>
   );
 }
