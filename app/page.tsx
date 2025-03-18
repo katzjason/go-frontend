@@ -85,10 +85,14 @@ export default function Home() {
   // Payload();
   console.log("FINISHED");
 
+  const boardClick = (x: number, y: number) => {
+    console.log("Clicked: (" + x + "," + y + ")");
+  };
+
   return (
     <Layout>
       {/* <Board>{board}</Board> */}
-      <Board>{board}</Board>
+      <Board board={board} clickCallback={boardClick}></Board>
     </Layout>
   );
 }

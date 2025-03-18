@@ -6,9 +6,25 @@ interface coordinate {
   y: number;
 }
 
-export default function Board({ children }: { children: number[][] }) {
+interface props {
+  board: number[][];
+  clickCallback: (x: number, y: number) => void;
+}
+
+export default function Board({ board, clickCallback }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
   const boardRef = useRef<SVGRectElement>(null);
+
+  const nearestIntersection = (mouse_x: number, mouse_y: number, board: DOMRect) => {
+    let nearest_x = Math.floor(((mouse_x / board.width) * 100) / 12.5);
+    let x_rem = ((mouse_x / board.width) * 100) % 12.5;
+    if (x_rem > 6.25) { nearest_x += 1 }
+    let nearest_y = Math.floor(((mouse_y / board.height) * 100) / 12.5);
+    let y_rem = ((mouse_y / board.height) * 100) % 12.5;
+    if (y_rem > 6.25) { nearest_y += 1 }
+    let coords: coordinate = { x: nearest_x, y: nearest_y };
+    return coords;
+  }
 
   const handleMouseMove = (event: MouseEvent) => {
     if (boardRef.current) {
@@ -16,24 +32,33 @@ export default function Board({ children }: { children: number[][] }) {
       let mouse_x = event.clientX - board.left;
       let mouse_y = event.clientY - board.top;
       if (mouse_x >= 0 && mouse_x <= board.width && mouse_y >= 0 && mouse_y <= board.height) {
-        let nearest_x = Math.floor(((mouse_x / board.width) * 100) / 12.5);
-        let x_rem = ((mouse_x / board.width) * 100) % 12.5;
-        if (x_rem > 6.25) { nearest_x += 1 }
-        let nearest_y = Math.floor(((mouse_y / board.height) * 100) / 12.5);
-        let y_rem = ((mouse_y / board.height) * 100) % 12.5;
-        if (y_rem > 6.25) { nearest_y += 1 }
-        let circle_coords: coordinate = { x: nearest_x, y: nearest_y };
+        let circle_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
         setHoverCircle(circle_coords);
+        // clickCallback(nearest_x, nearest_y);
       } else {
         setHoverCircle(null);
       }
     }
   };
 
+  const handleMouseClick = (event: MouseEvent) => {
+    if (boardRef.current) {
+      const board = boardRef.current.getBoundingClientRect();
+      let mouse_x = event.clientX - board.left;
+      let mouse_y = event.clientY - board.top;
+      if (mouse_x >= 0 && mouse_x <= board.width && mouse_y >= 0 && mouse_y <= board.height) {
+        let move_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
+        clickCallback(move_coords.x, move_coords.y);
+      }
+    }
+  };
+
 
   useEffect(() => {
+    window.addEventListener('click', handleMouseClick);
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
+      window.removeEventListener('click', handleMouseClick);
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
@@ -80,8 +105,8 @@ export default function Board({ children }: { children: number[][] }) {
           )}
 
           {/* Drawing Stones */}
-          {children.map((row, row_i) => row.map((col, col_i) => {
-            if (children[row_i][col_i] == 1) {
+          {board.map((row, row_i) => row.map((col, col_i) => {
+            if (board[row_i][col_i] == 1) {
               return (
                 <circle key={row_i * 10 + col_i}
                   className={styles.blackStone}
@@ -90,7 +115,7 @@ export default function Board({ children }: { children: number[][] }) {
                   r="3.5%"
                 ></circle>
               );
-            } else if (children[row_i][col_i] == -1) {
+            } else if (board[row_i][col_i] == -1) {
               return (
                 <circle key={row_i * 10 + col_i}
                   className={styles.whiteStone}
@@ -107,6 +132,5 @@ export default function Board({ children }: { children: number[][] }) {
         </g>
       </svg>
     </div >
-
   );
 }
