@@ -63,3 +63,11 @@
   stroke: white;
   stroke-width: 1px;
 }
+
+.hoverCircle {
+  fill: #A9A9A9;
+  opacity: 0.5;
+  stroke: black;
+  stroke-opacity: 0.75;
+  stroke-width: 1px;
+}
