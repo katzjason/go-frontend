@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 interface MoveData {
   row: number;
   col: number;
+  passed: number;
   player_turn: number
 };
 
@@ -15,28 +16,35 @@ interface BoardState {
   move: MoveData,
   board: number[][];
   turns: number[][];
-  blackPrisoners: number;
-  whitePrisoners: number;
+  blacksPrisoners: number;
+  whitesPrisoners: number;
   ko_x: number;
   ko_y: number;
   ko_player_restriction: number;
   last_black_move: String;
   last_white_move: String;
   this_turn: number;
+  game_over: boolean;
+  blacks_score: number;
+  whites_score: number;
 };
 
+
 const initialBoardState: BoardState = {
-  move: { row: 0, col: 0, player_turn: 1 },
+  move: { row: 0, col: 0, passed: 0, player_turn: 1 },
   board: Array(9).fill(Array(9).fill(0)),
   turns: Array(9).fill(Array(9).fill(0)),
-  blackPrisoners: 0,
-  whitePrisoners: 0,
-  ko_x: -1,
-  ko_y: -1,
+  blacksPrisoners: 0,
+  whitesPrisoners: 0,
+  ko_x: 10,
+  ko_y: 10,
   ko_player_restriction: 0,
   last_black_move: "",
   last_white_move: "",
-  this_turn: 0,
+  this_turn: 1,
+  game_over: false,
+  blacks_score: 0,
+  whites_score: 0,
 };
 
 
@@ -53,21 +61,43 @@ export default function Home() {
       if (!response.ok) throw new Error(response.statusText);
       const responseJson = await response.json();
 
+
       setBoardState((prevBoardState) => {
+        let new_last_black_move = prevBoardState.last_black_move;
+        let new_last_white_move = prevBoardState.last_white_move;
+        let new_game_over = responseJson.game_over == true ? true : prevBoardState.game_over;
+        if (prevBoardState.move.player_turn != responseJson.move_player) {
+          if (prevBoardState.move.player_turn == 1) {
+            if (prevBoardState.move.passed == 1) {
+              new_last_black_move = "pass";
+            } else {
+              new_last_black_move = `${prevBoardState.move.col},${prevBoardState.move.row}`;
+            }
+          } else {
+            if (prevBoardState.move.passed == 1) {
+              new_last_white_move = "pass";
+            } else {
+              new_last_white_move = `${prevBoardState.move.col},${prevBoardState.move.row}`;
+            }
+
+          }
+        };
         return {
           ...prevBoardState,
           board: responseJson.board,
-          move: { row: 0, col: 0, player_turn: responseJson.move_player },
-          turns: Array(9).fill(Array(9).fill(0)),
-          blackPrisoners: 0,
-          whitePrisoners: 0,
-          ko_x: -1,
-          ko_y: -1,
-          ko_player_restriction: 0,
-          last_black_move: "",
-          last_white_move: "",
-          this_turn: prevBoardState.this_turn + 1,
-          move_added: responseJson.added,
+          move: { row: prevBoardState.move.row, col: prevBoardState.move.col, passed: prevBoardState.move.passed, player_turn: responseJson.move_player },
+          turns: responseJson.turns,
+          blacksPrisoners: responseJson.blacks_prisoners,
+          whitesPrisoners: responseJson.whites_prisoners,
+          ko_x: responseJson.ko.first,
+          ko_y: responseJson.ko.second,
+          ko_player_restriction: responseJson.ko_player_restriction,
+          last_black_move: new_last_black_move,
+          last_white_move: new_last_white_move,
+          this_turn: responseJson.this_turn,
+          game_over: new_game_over,
+          blacks_score: responseJson.blacks_score,
+          whites_score: responseJson.whites_score,
         }
       });
 
@@ -80,16 +110,38 @@ export default function Home() {
     setBoardState((prevBoardState) => {
       const new_boardState: BoardState = {
         ...prevBoardState,
-        move: { row: y, col: x, player_turn: prevBoardState.move.player_turn },
+        move: { row: y, col: x, passed: 0, player_turn: prevBoardState.move.player_turn },
       }
-      sendRequest(new_boardState);
+      if (!prevBoardState.game_over) {
+        sendRequest(new_boardState);
+      }
+      return new_boardState;
+    });
+  });
+
+  const passTurn = (() => {
+    setBoardState((prevBoardState) => {
+      const new_boardState: BoardState = {
+        ...prevBoardState,
+        move: { row: prevBoardState.move.row, col: prevBoardState.move.col, passed: 1, player_turn: prevBoardState.move.player_turn },
+      }
+      if (!prevBoardState.game_over) {
+        sendRequest(new_boardState);
+      }
       return new_boardState;
     });
   });
 
   return (
     < Layout >
-      <Board board={boardState.board} clickCallback={boardClick}></Board>
+      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn}></Board>
+      <h2>Ko: {String(boardState.ko_x) + "," + String(boardState.ko_y)}</h2>
+      <h2>Ko Player Restriction: {String(boardState.ko_player_restriction)}</h2>
+      <h2>Game Over: {String(boardState.game_over)}</h2>
+      <h2>Black's Prisoners: {String(boardState.blacksPrisoners)}</h2>
+      <h2>White's Prisoners: {String(boardState.whitesPrisoners)}</h2>
+      <h2>Black's Score: {String(boardState.blacks_score)}</h2>
+      <h2>White's Score: {String(boardState.whites_score)}</h2>
     </Layout >
   );
 

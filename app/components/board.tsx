@@ -9,9 +9,10 @@ interface coordinate {
 interface props {
   board: number[][];
   clickCallback: (x: number, y: number) => void;
+  handlePass: () => void;
 }
 
-export default function Board({ board, clickCallback }: props) {
+export default function Board({ board, clickCallback, handlePass }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
   const boardRef = useRef<SVGRectElement>(null);
 
@@ -53,13 +54,22 @@ export default function Board({ board, clickCallback }: props) {
     }
   };
 
+  const handleSpace = (event: KeyboardEvent) => {
+    if (event.code == 'Space') {
+      event.preventDefault();
+      handlePass();
+    }
+  }
+
 
   useEffect(() => {
     window.addEventListener('click', handleMouseClick);
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('keydown', handleSpace)
     return () => {
       window.removeEventListener('click', handleMouseClick);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('keydown', handleSpace);
     };
   }, []);
 
