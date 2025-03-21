@@ -38,7 +38,8 @@
 
 .boardBackground {
   background-color: #947A54;
-  margin-left: 20%;
+  /* margin-left: 20%; */
+  margin-top: 5%;
 }
 
 .board {
@@ -47,9 +48,17 @@
   y: 5%;
 }
 
+.board:hover {
+  cursor: pointer;
+}
+
 .boardLine {
   stroke: black;
   stroke-width: 3px;
+}
+
+.boardLine:hover {
+  cursor: pointer;
 }
 
 .whiteStone {
@@ -57,6 +66,7 @@
   stroke: black;
   stroke-width: 1px;
 }
+
 
 .blackStone {
   fill: black;
@@ -70,4 +80,8 @@
   stroke: black;
   stroke-opacity: 0.75;
   stroke-width: 1px;
+}
+
+.hoverCircle:hover {
+  cursor: pointer;
 }

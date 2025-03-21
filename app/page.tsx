@@ -2,6 +2,8 @@
 import React from 'react';
 import Layout from './components/layout';
 import Board from './components/board';
+import ToggleSetting from './components/toggleSetting';
+import StartButton from './components/startButton';
 import { useEffect, useState } from 'react';
 
 
@@ -27,6 +29,7 @@ interface BoardState {
   game_over: boolean;
   blacks_score: number;
   whites_score: number;
+  area_scoring: boolean;
 };
 
 
@@ -45,14 +48,18 @@ const initialBoardState: BoardState = {
   game_over: false,
   blacks_score: 0,
   whites_score: 0,
+  area_scoring: false,
 };
 
 
 export default function Home() {
   const [boardState, setBoardState] = useState<BoardState>(initialBoardState);
+  const [liveGame, setLiveGame] = useState(false);
+  const [oneVone, setOneVOne] = useState(true);
+  const [areaScoring, setAreaScoring] = useState(true);
+
   const sendRequest = async (state: BoardState) => {
     try {
-
       const response = await fetch("http://localhost:8080/api/board/move", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -98,6 +105,7 @@ export default function Home() {
           game_over: new_game_over,
           blacks_score: responseJson.blacks_score,
           whites_score: responseJson.whites_score,
+          area_scoring: areaScoring,
         }
       });
 
@@ -119,6 +127,26 @@ export default function Home() {
     });
   });
 
+  const startGame = (() => {
+    if (!liveGame) {
+      setLiveGame(true);
+    }
+  });
+
+  const toggleOneVOne = (() => {
+    if (!liveGame) {
+      setOneVOne(!oneVone);
+    }
+
+  })
+
+  const toggleAreaScoring = (() => {
+    if (!liveGame) {
+      setAreaScoring(!areaScoring);
+    }
+  })
+
+
   const passTurn = (() => {
     setBoardState((prevBoardState) => {
       const new_boardState: BoardState = {
@@ -134,7 +162,11 @@ export default function Home() {
 
   return (
     < Layout >
-      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn}></Board>
+      <ToggleSetting instruction="Select Game Mode:" option1={"1v1"} option2={"vs AI"} writeable={!liveGame} clickCallback={toggleOneVOne} disabled={liveGame}></ToggleSetting>
+      <ToggleSetting instruction="Select Scoring Method:" option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
+      <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
+      <h2>Turn: Black, Ko:, Black's Prisoners:, White's Prisoners</h2>
+      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame}></Board>
       <h2>Ko: {String(boardState.ko_x) + "," + String(boardState.ko_y)}</h2>
       <h2>Ko Player Restriction: {String(boardState.ko_player_restriction)}</h2>
       <h2>Game Over: {String(boardState.game_over)}</h2>
@@ -144,5 +176,4 @@ export default function Home() {
       <h2>White's Score: {String(boardState.whites_score)}</h2>
     </Layout >
   );
-
 }

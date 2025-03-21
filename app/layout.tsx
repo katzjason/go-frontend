@@ -32,7 +32,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NavBar items={navItems} />
+        {/* <NavBar items={navItems} /> */}
         {children}
       </body>
     </html>

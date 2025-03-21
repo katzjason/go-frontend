@@ -1,5 +1,7 @@
 .container {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 70%;
   aspect-ratio: 1/1;
   max-height: 44rem;

@@ -1,0 +1,24 @@
+.container {
+  width: 15%;
+  height: 100%;
+  padding-top: 10px;
+}
+
+.writeable {}
+
+.unwriteable {
+  opacity: 40%;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  background-color: lightgray;
+  color: black;
+  border: 2px solid black;
+  font-weight: bold;
+}
+
+.button:hover {
+  cursor: pointer;
+}

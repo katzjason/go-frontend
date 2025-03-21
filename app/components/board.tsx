@@ -2,17 +2,18 @@ import styles from './board.module.css';
 import React, { useState, useRef, useEffect } from 'react';
 
 interface coordinate {
-  x: number;
-  y: number;
+  x: number,
+  y: number,
 }
 
 interface props {
-  board: number[][];
-  clickCallback: (x: number, y: number) => void;
-  handlePass: () => void;
+  board: number[][],
+  clickCallback: (x: number, y: number) => void,
+  handlePass: () => void,
+  enabled: boolean,
 }
 
-export default function Board({ board, clickCallback, handlePass }: props) {
+export default function Board({ board, clickCallback, handlePass, enabled }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
   const boardRef = useRef<SVGRectElement>(null);
 
@@ -28,14 +29,13 @@ export default function Board({ board, clickCallback, handlePass }: props) {
   }
 
   const handleMouseMove = (event: MouseEvent) => {
-    if (boardRef.current) {
+    if (enabled && boardRef.current) {
       const board = boardRef.current.getBoundingClientRect();
       let mouse_x = event.clientX - board.left;
       let mouse_y = event.clientY - board.top;
       if (mouse_x >= 0 && mouse_x <= board.width && mouse_y >= 0 && mouse_y <= board.height) {
         let circle_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
         setHoverCircle(circle_coords);
-        // clickCallback(nearest_x, nearest_y);
       } else {
         setHoverCircle(null);
       }
@@ -43,7 +43,7 @@ export default function Board({ board, clickCallback, handlePass }: props) {
   };
 
   const handleMouseClick = (event: MouseEvent) => {
-    if (boardRef.current) {
+    if (enabled && boardRef.current) {
       const board = boardRef.current.getBoundingClientRect();
       let mouse_x = event.clientX - board.left;
       let mouse_y = event.clientY - board.top;
@@ -55,23 +55,31 @@ export default function Board({ board, clickCallback, handlePass }: props) {
   };
 
   const handleSpace = (event: KeyboardEvent) => {
-    if (event.code == 'Space') {
+    if (enabled && event.code == 'Space') {
       event.preventDefault();
       handlePass();
     }
-  }
+  };
 
 
   useEffect(() => {
-    window.addEventListener('click', handleMouseClick);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('keydown', handleSpace)
+    if (enabled) {
+      window.addEventListener('click', handleMouseClick);
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('keydown', handleSpace)
+    } else {
+      window.removeEventListener('click', handleMouseClick);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('keydown', handleSpace);
+    }
     return () => {
       window.removeEventListener('click', handleMouseClick);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('keydown', handleSpace);
     };
-  }, []);
+  }, [enabled]);
+
+
 
   return (
     <div>

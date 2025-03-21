@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 40%;
+  /* height: 10%; */
+  padding-top: 10px;
+  min-height: 40px;
+  min-width: 300px;
+  /* opacity: 40%; */
+}
+
+.writeable {}
+
+.unwriteable {
+  opacity: 40%;
+}
+
+.subcontainer {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+
+.untoggled {
+  background-color: darkgray;
+  color: black;
+  font-weight: normal;
+  border: 2px solid darkgray;
+  opacity: 70%;
+}
+
+.toggled {
+  background-color: lightgrey;
+  color: black;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+.switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  font-size: 20px;
+}
+
+
+.switch:hover {
+  cursor: pointer;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  font-size: 120%;
+  /* font-size: 25px; */
+  font-weight: bold;
+
+}
