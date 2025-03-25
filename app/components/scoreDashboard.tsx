@@ -1,4 +1,3 @@
-import { ReactNode, useState } from 'react';
 import styles from './scoreDashboard.module.css';
 
 interface params {

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './toggleSetting.module.css';
 
 type toggleSettingsProps = {
@@ -12,7 +12,6 @@ type toggleSettingsProps = {
 
 export default function ToggleSetting({ instruction, option1, option2, writeable, clickCallback, disabled }: toggleSettingsProps) {
   const [isToggled, setIsToggled] = useState(true);
-  const [writeableClassName, setWriteableClassName] = useState(styles.container);
 
   const handleClick = () => {
     if (!disabled) {

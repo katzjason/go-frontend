@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavBar from './components/navbar';
+// import NavBar from './components/navbar';
 
-type NavItemType = {
-  name: string,
-  link: string
-};
+// type NavItemType = {
+//   name: string,
+//   link: string
+// };
 
-const navItems: NavItemType[] = [
-  { name: "Play", link: "/" },
-  { name: "About", link: "/about-page" }
-];
+// const navItems: NavItemType[] = [
+//   { name: "Play", link: "/" },
+//   { name: "About", link: "/about-page" }
+// ];
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

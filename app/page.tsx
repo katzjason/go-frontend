@@ -4,7 +4,7 @@ import Layout from './components/layout';
 import Board from './components/board';
 import ToggleSetting from './components/toggleSetting';
 import StartButton from './components/startButton';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ScoreDashBoard from './components/scoreDashboard';
 
 
@@ -24,8 +24,8 @@ interface BoardState {
   ko_x: number;
   ko_y: number;
   ko_player_restriction: number;
-  last_black_move: String;
-  last_white_move: String;
+  last_black_move: string;
+  last_white_move: string;
   this_turn: number;
   game_over: boolean;
   blacks_score: number;
@@ -73,7 +73,7 @@ export default function Home() {
       setBoardState((prevBoardState) => {
         let new_last_black_move = prevBoardState.last_black_move;
         let new_last_white_move = prevBoardState.last_white_move;
-        let new_game_over = responseJson.game_over == true ? true : prevBoardState.game_over;
+        const new_game_over = responseJson.game_over == true ? true : prevBoardState.game_over;
         if (prevBoardState.move.player_turn != responseJson.move_player) {
           if (prevBoardState.move.player_turn == 1) {
             if (prevBoardState.move.passed == 1) {

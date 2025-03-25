@@ -20,22 +20,22 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
 
   const nearestIntersection = (mouse_x: number, mouse_y: number, board: DOMRect) => {
     let nearest_x = Math.floor(((mouse_x / board.width) * 100) / 12.5);
-    let x_rem = ((mouse_x / board.width) * 100) % 12.5;
+    const x_rem = ((mouse_x / board.width) * 100) % 12.5;
     if (x_rem > 6.25) { nearest_x += 1 }
     let nearest_y = Math.floor(((mouse_y / board.height) * 100) / 12.5);
-    let y_rem = ((mouse_y / board.height) * 100) % 12.5;
+    const y_rem = ((mouse_y / board.height) * 100) % 12.5;
     if (y_rem > 6.25) { nearest_y += 1 }
-    let coords: coordinate = { x: nearest_x, y: nearest_y };
+    const coords: coordinate = { x: nearest_x, y: nearest_y };
     return coords;
   }
 
   const handleMouseMove = (event: MouseEvent) => {
     if (enabled && boardRef.current) {
       const board = boardRef.current.getBoundingClientRect();
-      let mouse_x = event.clientX - board.left;
-      let mouse_y = event.clientY - board.top;
+      const mouse_x = event.clientX - board.left;
+      const mouse_y = event.clientY - board.top;
       if (mouse_x >= 0 && mouse_x <= board.width && mouse_y >= 0 && mouse_y <= board.height) {
-        let circle_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
+        const circle_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
         setHoverCircle(circle_coords);
       } else {
         setHoverCircle(null);
@@ -46,10 +46,10 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
   const handleMouseClick = (event: MouseEvent) => {
     if (enabled && boardRef.current) {
       const board = boardRef.current.getBoundingClientRect();
-      let mouse_x = event.clientX - board.left;
-      let mouse_y = event.clientY - board.top;
+      const mouse_x = event.clientX - board.left;
+      const mouse_y = event.clientY - board.top;
       if (mouse_x >= 0 && mouse_x <= board.width && mouse_y >= 0 && mouse_y <= board.height) {
-        let move_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
+        const move_coords: coordinate = nearestIntersection(mouse_x, mouse_y, board);
         clickCallback(move_coords.x, move_coords.y);
       }
     }
