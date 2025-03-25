@@ -62,7 +62,9 @@ export default function Home() {
   const sendRequest = async (state: BoardState) => {
     try {
       // const response = await fetch("http://localhost:8080/api/board/move", {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/board/move`, {
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/board/move`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const response = await fetch(backendUrl + "/api/board/move", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(state)
