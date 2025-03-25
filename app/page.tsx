@@ -5,6 +5,7 @@ import Board from './components/board';
 import ToggleSetting from './components/toggleSetting';
 import StartButton from './components/startButton';
 import { useEffect, useState } from 'react';
+import ScoreDashBoard from './components/scoreDashboard';
 
 
 interface MoveData {
@@ -165,15 +166,8 @@ export default function Home() {
       <ToggleSetting instruction="Select Game Mode:" option1={"1v1"} option2={"vs AI"} writeable={!liveGame} clickCallback={toggleOneVOne} disabled={liveGame}></ToggleSetting>
       <ToggleSetting instruction="Select Scoring Method:" option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
       <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
-      <h2>Turn: Black, Ko:, Black's Prisoners:, White's Prisoners</h2>
-      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame}></Board>
-      <h2>Ko: {String(boardState.ko_x) + "," + String(boardState.ko_y)}</h2>
-      <h2>Ko Player Restriction: {String(boardState.ko_player_restriction)}</h2>
-      <h2>Game Over: {String(boardState.game_over)}</h2>
-      <h2>Black's Prisoners: {String(boardState.blacksPrisoners)}</h2>
-      <h2>White's Prisoners: {String(boardState.whitesPrisoners)}</h2>
-      <h2>Black's Score: {String(boardState.blacks_score)}</h2>
-      <h2>White's Score: {String(boardState.whites_score)}</h2>
+      <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
+      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false}></Board>
     </Layout >
   );
 }

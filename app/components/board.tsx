@@ -11,9 +11,10 @@ interface props {
   clickCallback: (x: number, y: number) => void,
   handlePass: () => void,
   enabled: boolean,
+  blacksTurn: boolean,
 }
 
-export default function Board({ board, clickCallback, handlePass, enabled }: props) {
+export default function Board({ board, clickCallback, handlePass, enabled, blacksTurn }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
   const boardRef = useRef<SVGRectElement>(null);
 
@@ -115,7 +116,7 @@ export default function Board({ board, clickCallback, handlePass, enabled }: pro
           {/* {Hover Circle} */}
           {hoverCircle && (
             <circle
-              className={styles.hoverCircle}
+              className={`${blacksTurn ? styles.blackStone : styles.whiteStone} ${styles.hoverCircle}`}
               cx={`${5 + hoverCircle.x * 11.25}%`}
               cy={`${5 + hoverCircle.y * 11.25}%`}
               r="3.5%"

@@ -1,7 +1,47 @@
+@media (min-width: 2001px) {
+  .container {
+    width: 140px;
+    padding: 30px 0px 40px 0px;
+    font-size: 25px;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 2000px) {
+  .container {
+    width: 140px;
+    padding: 30px 0px 40px 0px;
+    font-size: 25px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .container {
+    width: 120px;
+    padding: 20px 0px 40px 0px;
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    width: 80px;
+    padding: 0px 0px 40px 0px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 80px;
+    padding: 0px 0px 40px 0px;
+  }
+}
+
+
 .container {
-  width: 15%;
-  height: 100%;
-  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .writeable {}
@@ -17,6 +57,7 @@
   color: black;
   border: 2px solid black;
   font-weight: bold;
+  width: 100%;
 }
 
 .button:hover {
