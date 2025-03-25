@@ -63,7 +63,8 @@ export default function Home() {
     try {
       // const response = await fetch("http://localhost:8080/api/board/move", {
       // const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/board/move`, {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
+      console.log(backendUrl);
       const response = await fetch(backendUrl + "/api/board/move", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -82,13 +83,13 @@ export default function Home() {
             if (prevBoardState.move.passed == 1) {
               new_last_black_move = "pass";
             } else {
-              new_last_black_move = `${prevBoardState.move.col},${prevBoardState.move.row}`;
+              new_last_black_move = `${prevBoardState.move.col}, ${prevBoardState.move.row}`;
             }
           } else {
             if (prevBoardState.move.passed == 1) {
               new_last_white_move = "pass";
             } else {
-              new_last_white_move = `${prevBoardState.move.col},${prevBoardState.move.row}`;
+              new_last_white_move = `${prevBoardState.move.col},${prevBoardState.move.row} `;
             }
 
           }
