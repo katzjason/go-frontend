@@ -12,9 +12,11 @@ interface props {
   handlePass: () => void,
   enabled: boolean,
   blacksTurn: boolean,
+  tempDisabled: boolean,
 }
 
-export default function Board({ board, clickCallback, handlePass, enabled, blacksTurn }: props) {
+
+export default function Board({ board, clickCallback, handlePass, enabled, blacksTurn, tempDisabled }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
   const boardRef = useRef<SVGRectElement>(null);
 
@@ -44,7 +46,7 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
   };
 
   const handleMouseClick = (event: MouseEvent) => {
-    if (enabled && boardRef.current) {
+    if (enabled && boardRef.current && !tempDisabled) {
       const board = boardRef.current.getBoundingClientRect();
       const mouse_x = event.clientX - board.left;
       const mouse_y = event.clientY - board.top;

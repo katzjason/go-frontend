@@ -31,7 +31,9 @@ interface BoardState {
   blacks_score: number;
   whites_score: number;
   area_scoring: boolean;
+  oneVone: boolean;
 };
+
 
 
 const initialBoardState: BoardState = {
@@ -50,6 +52,7 @@ const initialBoardState: BoardState = {
   blacks_score: 0,
   whites_score: 0,
   area_scoring: false,
+  oneVone: true,
 };
 
 
@@ -58,13 +61,14 @@ export default function Home() {
   const [liveGame, setLiveGame] = useState(false);
   const [oneVone, setOneVOne] = useState(true);
   const [areaScoring, setAreaScoring] = useState(true);
+  const [tempDisableBoard, setTempDisableBoard] = useState(false);
 
-  const sendRequest = async (state: BoardState) => {
+  const sendRequest = async (state: BoardState): Promise<BoardState> => {
     try {
-      // const response = await fetch("http://localhost:8080/api/board/move", {
-      // const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/board/move`, {
-      const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
-      const response = await fetch(backendUrl + "/api/board/move", {
+      const response = await fetch("http://localhost:8080/api/board/move", {
+        // const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/board/move`, {
+        //const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
+        //const response = await fetch(backendUrl + "/api/board/move", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(state)
@@ -73,63 +77,137 @@ export default function Home() {
       const responseJson = await response.json();
 
 
-      setBoardState((prevBoardState) => {
-        let new_last_black_move = prevBoardState.last_black_move;
-        let new_last_white_move = prevBoardState.last_white_move;
-        const new_game_over = responseJson.game_over == true ? true : prevBoardState.game_over;
-        if (prevBoardState.move.player_turn != responseJson.move_player) {
-          if (prevBoardState.move.player_turn == 1) {
-            if (prevBoardState.move.passed == 1) {
-              new_last_black_move = "pass";
-            } else {
-              new_last_black_move = `${prevBoardState.move.col}, ${prevBoardState.move.row}`;
-            }
+      // setBoardState((prevBoardState) => {
+      let new_last_black_move = state.last_black_move;
+      let new_last_white_move = state.last_white_move;
+      const new_game_over = responseJson.game_over == true ? true : state.game_over;
+      if (state.move.player_turn != responseJson.move_player) {
+        if (state.move.player_turn == 1) {
+          if (state.move.passed == 1) {
+            new_last_black_move = "pass";
           } else {
-            if (prevBoardState.move.passed == 1) {
-              new_last_white_move = "pass";
-            } else {
-              new_last_white_move = `${prevBoardState.move.col},${prevBoardState.move.row} `;
-            }
-
+            new_last_black_move = `${state.move.col}, ${state.move.row}`;
           }
-        };
-        return {
-          ...prevBoardState,
-          board: responseJson.board,
-          move: { row: prevBoardState.move.row, col: prevBoardState.move.col, passed: prevBoardState.move.passed, player_turn: responseJson.move_player },
-          turns: responseJson.turns,
-          blacksPrisoners: responseJson.blacks_prisoners,
-          whitesPrisoners: responseJson.whites_prisoners,
-          ko_x: responseJson.ko.first,
-          ko_y: responseJson.ko.second,
-          ko_player_restriction: responseJson.ko_player_restriction,
-          last_black_move: new_last_black_move,
-          last_white_move: new_last_white_move,
-          this_turn: responseJson.this_turn,
-          game_over: new_game_over,
-          blacks_score: responseJson.blacks_score,
-          whites_score: responseJson.whites_score,
-          area_scoring: areaScoring,
-        }
-      });
+        } else {
+          if (state.move.passed == 1) {
+            new_last_white_move = "pass";
+          } else {
+            new_last_white_move = `${state.move.col},${state.move.row} `;
+          }
 
+        }
+      };
+
+      const updatedState: BoardState = {
+        // return {
+        ...state,
+        board: responseJson.board,
+        move: { row: state.move.row, col: state.move.col, passed: state.move.passed, player_turn: responseJson.move_player },
+        turns: responseJson.turns,
+        blacksPrisoners: responseJson.blacks_prisoners,
+        whitesPrisoners: responseJson.whites_prisoners,
+        ko_x: responseJson.ko.first,
+        ko_y: responseJson.ko.second,
+        ko_player_restriction: responseJson.ko_player_restriction,
+        last_black_move: new_last_black_move,
+        last_white_move: new_last_white_move,
+        this_turn: responseJson.this_turn,
+        game_over: new_game_over,
+        blacks_score: responseJson.blacks_score,
+        whites_score: responseJson.whites_score,
+        area_scoring: areaScoring,
+        oneVone: oneVone,
+      }
+      // });
+      return updatedState;
     } catch (error) {
       console.error("Failed to send payload to backend: ", error);
+      throw error;
     };
   }
 
-  const boardClick = ((x: number, y: number) => {
+  const sendAIRequest = async (state: BoardState, callback: (newBoardState: BoardState) => void) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/board/ai_move", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state)
+      });
+      if (!response.ok) throw new Error(response.statusText);
+      const responseJson = await response.json();
+
+      let new_last_black_move = state.last_black_move;
+      let new_last_white_move = state.last_white_move;
+      const new_game_over = responseJson.game_over === true ? true : state.game_over;
+
+      if (state.move.player_turn !== responseJson.move_player) {
+        if (state.move.player_turn === 1) {
+          new_last_black_move = state.move.passed === 1
+            ? 'pass'
+            : `${state.move.col}, ${state.move.row}`;
+        } else {
+          new_last_white_move = state.move.passed === 1
+            ? 'pass'
+            : `${state.move.col}, ${state.move.row}`;
+        }
+      }
+
+      // return {
+      const newBoardState: BoardState = {
+        ...state,
+        board: responseJson.board,
+        move: {
+          row: state.move.row,
+          col: state.move.col,
+          passed: state.move.passed,
+          player_turn: responseJson.move_player,
+        },
+        turns: responseJson.turns,
+        blacksPrisoners: responseJson.blacks_prisoners,
+        whitesPrisoners: responseJson.whites_prisoners,
+        ko_x: responseJson.ko.first,
+        ko_y: responseJson.ko.second,
+        ko_player_restriction: responseJson.ko_player_restriction,
+        last_black_move: new_last_black_move,
+        last_white_move: new_last_white_move,
+        this_turn: responseJson.this_turn,
+        game_over: new_game_over,
+        blacks_score: responseJson.blacks_score,
+        whites_score: responseJson.whites_score,
+        area_scoring: areaScoring,
+        oneVone: oneVone,
+      };
+      callback(newBoardState);
+
+    } catch (error) {
+      console.error("Failed to send payload to algo api: ", error);
+    }
+  }
+
+  const boardClick = (x: number, y: number) => {
     setBoardState((prevBoardState) => {
-      const new_boardState: BoardState = {
+      const userMoveState: BoardState = {
         ...prevBoardState,
         move: { row: y, col: x, passed: 0, player_turn: prevBoardState.move.player_turn },
+        oneVone: oneVone,
+      };
+
+      if (!userMoveState.game_over) {
+        sendRequest(userMoveState)
+          .then((updatedUserMoveState) => {
+            if (!oneVone) {
+              sendAIRequest(updatedUserMoveState, (ai_boardState) => {
+                setBoardState(ai_boardState);
+              });
+            } else {
+              setBoardState(updatedUserMoveState);
+            }
+          });
       }
-      if (!prevBoardState.game_over) {
-        sendRequest(new_boardState);
-      }
-      return new_boardState;
+      return userMoveState;
     });
-  });
+  };
+
 
   const startGame = (() => {
     if (!liveGame) {
@@ -141,7 +219,6 @@ export default function Home() {
     if (!liveGame) {
       setOneVOne(!oneVone);
     }
-
   })
 
   const toggleAreaScoring = (() => {
@@ -156,9 +233,18 @@ export default function Home() {
       const new_boardState: BoardState = {
         ...prevBoardState,
         move: { row: prevBoardState.move.row, col: prevBoardState.move.col, passed: 1, player_turn: prevBoardState.move.player_turn },
+        oneVone: oneVone,
       }
       if (!prevBoardState.game_over) {
-        sendRequest(new_boardState);
+        sendRequest(new_boardState).then((updatedUserMoveState) => {
+          if (!oneVone) {
+            sendAIRequest(updatedUserMoveState, (ai_boardState) => {
+              setBoardState(ai_boardState);
+            });
+          } else {
+            setBoardState(updatedUserMoveState);
+          }
+        });
       }
       return new_boardState;
     });
@@ -170,7 +256,7 @@ export default function Home() {
       <ToggleSetting instruction="Select Scoring Method:" option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
       <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
       <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
-      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false}></Board>
+      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={tempDisableBoard}></Board>
     </Layout >
   );
 }
