@@ -256,7 +256,7 @@ export default function Home() {
       <ToggleSetting instruction="Select Scoring Method:" option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
       <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
       <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
-      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={tempDisableBoard}></Board>
+      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={false}></Board>
     </Layout >
   );
 }
