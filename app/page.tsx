@@ -61,7 +61,7 @@ export default function Home() {
   const [liveGame, setLiveGame] = useState(false);
   const [oneVone, setOneVOne] = useState(true);
   const [areaScoring, setAreaScoring] = useState(true);
-  const [tempDisableBoard, setTempDisableBoard] = useState(false);
+  // const [tempDisableBoard, setTempDisableBoard] = useState(false);
 
   const sendRequest = async (state: BoardState): Promise<BoardState> => {
     try {
