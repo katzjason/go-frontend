@@ -128,7 +128,7 @@ export default function Home() {
 
   const sendAIRequest = async (state: BoardState, callback: (newBoardState: BoardState) => void) => {
     try {
-      const response = await fetch("http://localhost:8080/api/board/ai_move", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/board/ai_move`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(state)
