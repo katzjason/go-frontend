@@ -6,7 +6,6 @@ import ToggleSetting from './components/toggleSetting';
 import StartButton from './components/startButton';
 import { useState } from 'react';
 import ScoreDashBoard from './components/scoreDashboard';
-import ToggleTheme from '@/app/components/toggleTheme';
 
 
 

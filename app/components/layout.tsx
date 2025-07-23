@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import styles from './layout.module.css';
 import NavBar from '@/app/components/navbar';
 
 
