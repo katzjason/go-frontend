@@ -1,4 +1,3 @@
-import styles from './board.module.css';
 import React, { useState, useRef, useEffect } from 'react';
 
 interface coordinate {
@@ -18,7 +17,7 @@ interface props {
 
 export default function Board({ board, clickCallback, handlePass, enabled, blacksTurn, tempDisabled }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
-  const boardRef = useRef<SVGRectElement>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
 
   const nearestIntersection = (mouse_x: number, mouse_y: number, board: DOMRect) => {
     let nearest_x = Math.floor(((mouse_x / board.width) * 100) / 12.5);
@@ -85,73 +84,73 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
 
 
   return (
-    <div>
-      <svg className={styles.boardBackground}>
-        <g>
-          <rect ref={boardRef} className={styles.board} width="90%" height="90%"></rect>
-          {/* Vertical lines */}
-          {Array.from({ length: 9 }).map((_, i) => (
-            <line
-              key={i}
-              x1={`${5 + (i) * 11.25}%`}
-              y1="5%"
-              x2={`${5 + (i) * 11.25}%`}
-              y2="95%"
-              stroke="black"
-              strokeWidth="2"
-            />
-          ))}
+    <div className="flex justify-center h-full">
+      <div ref={boardRef}
+        className={`bg-[rgb(var(--secondary))] w-[90%] h-[90%] rounded-2xl hover:cursor-pointer`}>
+        <svg width="100%" height="100%">
+          <g>
+            {/* Vertical lines */}
+            {Array.from({ length: 9 }).map((_, i) => (
+              <line
+                key={i}
+                x1={`${5 + (i) * 11.25}%`}
+                y1="5%"
+                x2={`${5 + (i) * 11.25}%`}
+                y2="95%"
+                className="stroke-[rgb(var(--primary))] stroke-[4]"
+              />
+            ))}
 
-          {/* Horizontal lines */}
-          {Array.from({ length: 9 }).map((_, i) => (
-            <line
-              key={i}
-              y1={`${5 + (i) * 11.25}%`}
-              x1="5%"
-              y2={`${5 + (i) * 11.25}%`}
-              x2="95%"
-              stroke="black"
-              strokeWidth="2"
-            />
-          ))}
+            {/* Horizontal lines */}
+            {Array.from({ length: 9 }).map((_, i) => (
+              <line
+                key={i}
+                y1={`${5 + (i) * 11.25}%`}
+                x1="5%"
+                y2={`${5 + (i) * 11.25}%`}
+                x2="95%"
+                className="stroke-[rgb(var(--primary))] stroke-[4]"
+              />
+            ))}
 
-          {/* {Hover Circle} */}
-          {hoverCircle && (
-            <circle
-              className={`${blacksTurn ? styles.blackStone : styles.whiteStone} ${styles.hoverCircle}`}
-              cx={`${5 + hoverCircle.x * 11.25}%`}
-              cy={`${5 + hoverCircle.y * 11.25}%`}
-              r="3.5%"
-            />
-          )}
+            {/* {Hover Circle} */}
+            {hoverCircle && (
+              <circle
+                className={`${blacksTurn ? "fill-black stroke-white stroke-1" : "fill-white stroke-black stroke-1"} opacity-50`}
+                cx={`${5 + hoverCircle.x * 11.25}%`}
+                cy={`${5 + hoverCircle.y * 11.25}%`}
+                r="3.5%"
+              />
+            )}
 
-          {/* Drawing Stones */}
-          {board.map((row, row_i) => row.map((col, col_i) => {
-            if (board[row_i][col_i] == 1) {
-              return (
-                <circle key={row_i * 10 + col_i}
-                  className={styles.blackStone}
-                  cx={`${5 + (col_i) * 11.25}%`}
-                  cy={`${5 + (row_i) * 11.25}%`}
-                  r="3.5%"
-                ></circle>
-              );
-            } else if (board[row_i][col_i] == -1) {
-              return (
-                <circle key={row_i * 10 + col_i}
-                  className={styles.whiteStone}
-                  cx={`${5 + (col_i) * 11.25}%`}
-                  cy={`${5 + (row_i) * 11.25}%`}
-                  r="3.5%"
-                ></circle>
-              )
-            } else {
-              return
-            }
-          })
-          )}
-        </g>
-      </svg>
-    </div >
+            {/* Drawing Stones */}
+            {board.map((row, row_i) => row.map((col, col_i) => {
+              if (board[row_i][col_i] == 1) {
+                return (
+                  <circle key={row_i * 10 + col_i}
+                    className="fill-black stroke-white stroke-1"
+                    cx={`${5 + (col_i) * 11.25}%`}
+                    cy={`${5 + (row_i) * 11.25}%`}
+                    r="3.5%"
+                  ></circle>
+                );
+              } else if (board[row_i][col_i] == -1) {
+                return (
+                  <circle key={row_i * 10 + col_i}
+                    className="fill-white stroke-black stroke-1"
+                    cx={`${5 + (col_i) * 11.25}%`}
+                    cy={`${5 + (row_i) * 11.25}%`}
+                    r="3.5%"
+                  ></circle>
+                )
+              } else {
+                return
+              }
+            })
+            )}
+          </g>
+        </svg>
+      </div >
+    </div>
   );
 }

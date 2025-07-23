@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  :root {
+    --bg: 237 239 217;
+    --text: 0 0 0;
+    --primary: 197 177 111;
+    --secondary: 204 207 168;
+    --ring: 74 222 128;
+  }
+
+  .dark {
+    --bg: 18 16 38;
+    --text: 255 255 255;
+    --primary: 58 78 144;
+    --secondary: 51 48 87;
+    --ring: 250 204 21;
+  }
+
+  body {
+    background-color: rgb(var(--bg));
+    color: rbg(var(--text));
+    /* @apply bg-gray-50 text-slate-950 dark:bg-slate-950 dark:text-gray-500; */
+  }
+}

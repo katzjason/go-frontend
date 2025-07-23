@@ -6,6 +6,8 @@ import ToggleSetting from './components/toggleSetting';
 import StartButton from './components/startButton';
 import { useState } from 'react';
 import ScoreDashBoard from './components/scoreDashboard';
+import ToggleTheme from '@/app/components/toggleTheme';
+
 
 
 interface MoveData {
@@ -252,11 +254,18 @@ export default function Home() {
 
   return (
     < Layout >
-      <ToggleSetting instruction="Select Game Mode:" option1={"1v1"} option2={"vs AI"} writeable={!liveGame} clickCallback={toggleOneVOne} disabled={liveGame}></ToggleSetting>
-      <ToggleSetting instruction="Select Scoring Method:" option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
-      <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
-      <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
-      <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={false}></Board>
+      <div className="flex flex-col xl:flex-row h-[100%] items-center xl:items-start xl:justify-center xl:pt-10">
+        <div className="flex flex-col p-4 xl:p-7 h-2/5 max-h-80 xl:h-screen w-full xl:w-1/3 items-center">
+          <ToggleSetting option1={"1v1"} option2={"vs AI"} writeable={!liveGame} clickCallback={toggleOneVOne} disabled={liveGame}></ToggleSetting>
+          <ToggleSetting option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
+          <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
+          <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
+        </div>
+        <div className="flex flex-col aspect-[1/1] w-full max-w-[700px]">
+          <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={false}></Board>
+        </div>
+      </div>
     </Layout >
   );
 }
+// h-1/2 xl:h-full max-h-screen xl:w-auto xl:max-w-[75%] aspect-[1/1] mx-auto
