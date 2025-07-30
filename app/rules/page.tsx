@@ -3,7 +3,7 @@ import React from 'react';
 import Layout from '../components/layout';
 
 
-export default function Rules({ children }: { children: React.ReactNode }) {
+export default function Rules() {
   return (
     <Layout>
       <div className="w-screen flex justify-center mt-4 lg:mt-10">
