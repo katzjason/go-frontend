@@ -8,7 +8,6 @@ import { useState } from 'react';
 import ScoreDashBoard from './components/scoreDashboard';
 
 
-
 interface MoveData {
   row: number;
   col: number;
@@ -34,8 +33,6 @@ interface BoardState {
   area_scoring: boolean;
   oneVone: boolean;
 };
-
-
 
 const initialBoardState: BoardState = {
   move: { row: 0, col: 0, passed: 0, player_turn: 1 },
@@ -267,4 +264,3 @@ export default function Home() {
     </Layout >
   );
 }
-// h-1/2 xl:h-full max-h-screen xl:w-auto xl:max-w-[75%] aspect-[1/1] mx-auto

@@ -23,6 +23,5 @@
   body {
     background-color: rgb(var(--bg));
     color: rbg(var(--text));
-    /* @apply bg-gray-50 text-slate-950 dark:bg-slate-950 dark:text-gray-500; */
   }
 }

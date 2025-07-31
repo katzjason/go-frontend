@@ -24,7 +24,6 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
       {/* <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}> */}
       <ThemeProvider>
         <body>{children}</body>
-        {/* </body> */}
       </ThemeProvider>
 
     </html>

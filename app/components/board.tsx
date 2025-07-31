@@ -58,7 +58,7 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
 
   const handleSpace = (event: KeyboardEvent) => {
     if (enabled && event.code == 'Space') {
-      event.preventDefault();
+      event.preventDefault(); // prevents browser's default behavior which is to scroll down the page
       handlePass();
     }
   };
@@ -74,13 +74,12 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('keydown', handleSpace);
     }
-    return () => {
+    return () => { // only gets called if enabled changes or the component unmounts (removed from DOM)
       window.removeEventListener('click', handleMouseClick);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('keydown', handleSpace);
     };
   }, [enabled]);
-
 
 
   return (
