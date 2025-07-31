@@ -251,13 +251,13 @@ export default function Home() {
   return (
     < Layout >
       <div className="flex flex-col xl:flex-row h-[100%] items-center xl:items-start xl:justify-center xl:pt-10">
-        <div className="flex flex-col p-4 xl:p-7 h-2/5 max-h-80 xl:h-screen w-full xl:w-1/3 items-center">
+        <div className="flex flex-col p-4 xl:p-7 h-2/5 max-h-80 xl:h-screen w-full xl:w-1/4 items-center">
           <ToggleSetting option1={"1v1"} option2={"vs AI"} writeable={!liveGame} clickCallback={toggleOneVOne} disabled={liveGame}></ToggleSetting>
           <ToggleSetting option1={"Area"} option2={"Territory"} writeable={!liveGame} clickCallback={toggleAreaScoring} disabled={liveGame}></ToggleSetting>
           <StartButton clickCallback={startGame} writeable={!liveGame}></StartButton>
           <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
         </div>
-        <div className="flex flex-col aspect-[1/1] w-full max-w-[700px]">
+        <div className="flex flex-col aspect-[1/1] w-full max-w-[900px]">
           <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={false} gameOver={boardState.game_over}></Board>
         </div>
       </div>
