@@ -258,7 +258,7 @@ export default function Home() {
           <ScoreDashBoard blackScore={boardState.game_over ? boardState.blacks_score : boardState.blacksPrisoners} whiteScore={boardState.game_over ? boardState.whites_score : boardState.whitesPrisoners} gameOver={boardState.game_over}></ScoreDashBoard>
         </div>
         <div className="flex flex-col aspect-[1/1] w-full max-w-[700px]">
-          <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={false}></Board>
+          <Board board={boardState.board} clickCallback={boardClick} handlePass={passTurn} enabled={liveGame} blacksTurn={boardState.move.player_turn == 1 ? true : false} tempDisabled={false} gameOver={boardState.game_over}></Board>
         </div>
       </div>
     </Layout >

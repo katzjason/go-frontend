@@ -12,10 +12,11 @@ interface props {
   enabled: boolean,
   blacksTurn: boolean,
   tempDisabled: boolean,
+  gameOver: boolean,
 }
 
 
-export default function Board({ board, clickCallback, handlePass, enabled, blacksTurn, tempDisabled }: props) {
+export default function Board({ board, clickCallback, handlePass, enabled, blacksTurn, tempDisabled, gameOver }: props) {
   const [hoverCircle, setHoverCircle] = useState<coordinate | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
 
@@ -113,7 +114,7 @@ export default function Board({ board, clickCallback, handlePass, enabled, black
             ))}
 
             {/* {Hover Circle} */}
-            {hoverCircle && (
+            {hoverCircle && !gameOver && (
               <circle
                 className={`${blacksTurn ? "fill-black stroke-white stroke-1" : "fill-white stroke-black stroke-1"} opacity-50`}
                 cx={`${5 + hoverCircle.x * 11.25}%`}
