@@ -11,7 +11,7 @@ export default function Rules() {
           <div className="text-2xl lg:text-3xl mb-6 text-[rgb(var(--text))] font-bold">Basic Rules of Go</div>
           <div>
             <ol className="text-[rgb(var(--text))] text-xl lg:text-2xl p-8">
-              <li className="mb-4 list-decimal"><span className="font-bold">Game Start: </span>Black moves first, White moves second. Stones are placed on the board&apos;s intersections by clicking them; press 'Space' to pass your turn.</li>
+              <li className="mb-4 list-decimal"><span className="font-bold">Game Start: </span>Black moves first, White moves second. Stones are placed on the board&apos;s intersections by clicking them; press &apos;Space&apos; to pass your turn.</li>
               <li className="mt-4 mb-4 list-decimal"><span className="font-bold">Stone Movement: </span>Stones do not move after being placed—they stay put unless captured.</li>
               <li className="mt-4 mb-4 list-decimal"><span className="font-bold">Capturing Stones: </span>Stones are captured when they are completely surrounded on all four sides (up/down/left/right) by opponent stones = they have zero liberties.</li>
               <li className="mt-4 mb-4 list-decimal"><span className="font-bold">Liberties: </span>Empty intersections surrounding the stone: zero liberties = capture.</li>
