@@ -6,10 +6,11 @@ import Layout from '../components/layout';
 export default function About() {
   return (
     <Layout>
-      <div className="w-full h-full">
+      <div className="overflow-y-auto h-screen w-full [webkitOverflowScrolling:touch]">
         <iframe
           src="/alpha-go-mini-readme.pdf"
-          className="w-full h-full"
+          className="w-full min-h-[100vh] border-none"
+          style={{ display: 'block' }}
           title="alpha-go-mini-readme"
         />
       </div>
